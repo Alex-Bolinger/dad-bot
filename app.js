@@ -30,6 +30,8 @@ client.on("messageCreate", async message => {
                                     } else {
                                         match = true;
                                     }
+                                } else {
+                                    match = true;
                                 }
                                 if (match == true) {
                                     let outString = "";
