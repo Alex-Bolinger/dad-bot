@@ -1,6 +1,5 @@
 const {Client, Intents, Interaction} = require('discord.js');
 const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES"]});
-const config = require('./config.json');
 
 client.on('ready', () => {
     console.log('Bot is ready');
@@ -127,4 +126,4 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-client.login(config.token);
+client.login(process.env.token);
