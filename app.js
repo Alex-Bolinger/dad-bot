@@ -12,17 +12,11 @@ client.on("messageCreate", async message => {
         console.log(message.author.username + ": " + string);
         let index = 0;
         while (string.length > 1) {
-            if (string.startsWith("I'm") 
-                || string.startsWith("I am") 
-                || string.startsWith("Im") 
-                || string.startsWith("im") 
-                || string.startsWith("IM")
-                || string.startsWith("i am") 
-                || string.startsWith("I'M") 
-                || string.startsWith("I AM")) {
-                    if (string.startsWith("Im") 
-                    || string.startsWith("im") 
-                    || string.startsWith("IM")) {
+            let lowerString = string.toLowerCase();
+            if (lowerString.startsWith("i'm")
+                || lowerString.startsWith("im") 
+                || lowerString.startsWith("i am")) {
+                    if (lowerString.startsWith("im")) {
                         if (string.length > 2) {
                             if (string.charAt(2) == " ") {
                                 let match = false;
