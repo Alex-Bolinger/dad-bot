@@ -1,9 +1,25 @@
 const {Client, Intents, Interaction} = require('discord.js');
+const { readFile, readSync } = require('fs');
 const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES"]});
+const fs = require('fs');
 
 client.on('ready', () => {
     console.log('Bot is ready');
 });
+
+client.on("interactionCreate", async interaction => {
+    if (!interaction.isCommand()) {
+        return;
+    }
+    if (interaction.commandName == 'joke') {
+        var joke = "failed";
+        let index = Math.floor(Math.random() * 204);
+        let data = fs.readFileSync('./jokes.json');
+        let jokes = JSON.parse(data).jokes;
+        joke = jokes[index];
+        await interaction.reply(joke);
+    }
+})
 
 client.on("messageCreate", async message => {
     if (message.author.bot == false) {
@@ -14,20 +30,16 @@ client.on("messageCreate", async message => {
         let erorLocations = [];
         let index = 0;
         while (lowerString != "") {
-            console.log("1");
             if (lowerString.length > 1) {
                 if (lowerString.startsWith("er") 
                     || lowerString.startsWith("or")) {
                     erorCount++;
-                    lowerString = lowerString.substring(1);
                 }
-            } else {
-                break;
             }
+            lowerString = lowerString.substring(1);
         }
         lowerString = message.content.toLowerCase();
         while (erorCount != 0) {
-            console.log("2");
             if ((lowerString.charAt(index) == 'e' 
                 || lowerString.charAt(index) == 'o') 
                 && lowerString.charAt(index + 1) == 'r') {
@@ -43,25 +55,26 @@ client.on("messageCreate", async message => {
                             erorCount--;
                         }
                     }
+                } else {
+                    erorCount--;
                 }
             }
             index++;
         }
         let outstring = "";
         while (erorLocations.length > 0) {
-            console.log("3");
             let location = erorLocations.pop();
             let spaceIndex = location;
-            while (string[spaceIndex != ' ']) {
-                console.log("4");
+            while (string[spaceIndex] != ' ' && spaceIndex >= 0) {
                 spaceIndex--;
             }
             outstring += string.substring(spaceIndex + 1, location + 2) + "? I barely know her!\n";
         }
-        outstring = outstring.substring(0, outstring.length - 1);
-        message.reply(outstring);
+        if (outstring.length > 0) {
+            outstring = outstring.substring(0, outstring.length - 1);
+            message.reply(outstring);
+        }
         string = message.content;
-        console.log(message.author.username + ": " + string);
         index = 0;
         while (string.length > 1) {
             let lowerString = string.toLowerCase();
@@ -176,4 +189,4 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-client.login(process.env.token);
+client.login("OTMwODcwMjEwNDE4ODU1OTU2.Yd8KcA.nARnJAhQyDTmvqf-fj5cUhakJBg");
