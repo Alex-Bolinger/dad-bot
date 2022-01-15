@@ -110,10 +110,10 @@ client.on("messageCreate", async message => {
             }
         }
         let lowerString = message.content.toLowerCase();
-        let string = message.content;
+        string = message.content;
         let erorCount = 0;
         let erorLocations = [];
-        let index = 0;
+        index = 0;
         while (lowerString != "") {
             if (lowerString.length > 1) {
                 if (lowerString.startsWith("er") 
