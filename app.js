@@ -9,10 +9,12 @@ client.on("messageCreate", async message => {
     if (message.author.bot == false) {
         let lowerString = message.content.toLowerCase();
         let string = message.content;
+        console.log(message.author.username + ": " + string);
         let erorCount = 0;
         let erorLocations = [];
         let index = 0;
         while (lowerString != "") {
+            console.log("1");
             if (lowerString.length > 1) {
                 if (lowerString.startsWith("er") 
                     || lowerString.startsWith("or")) {
@@ -25,6 +27,7 @@ client.on("messageCreate", async message => {
         }
         lowerString = message.content.toLowerCase();
         while (erorCount != 0) {
+            console.log("2");
             if ((lowerString.charAt(index) == 'e' 
                 || lowerString.charAt(index) == 'o') 
                 && lowerString.charAt(index + 1) == 'r') {
@@ -46,9 +49,11 @@ client.on("messageCreate", async message => {
         }
         let outstring = "";
         while (erorLocations.length > 0) {
+            console.log("3");
             let location = erorLocations.pop();
             let spaceIndex = location;
             while (string[spaceIndex != ' ']) {
+                console.log("4");
                 spaceIndex--;
             }
             outstring += string.substring(spaceIndex + 1, location + 2) + "? I barely know her!\n";
