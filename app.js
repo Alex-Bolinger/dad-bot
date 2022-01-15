@@ -48,15 +48,13 @@ client.on("messageCreate", async message => {
                                         }
                                     }
                                     message.reply("Hi" + outString + "! I'm Dad Bot!");
-                                    return;
+                                    break;
                                 }
                             } else {
                                 string = string.substring(1);
                                 index++;
                             }
                         } else {
-                            if (message.content.length == 2) {
-                            }
                             let match = false;
                             let letter = message.content.charAt(index - 1).toLowerCase();
                             console.log(letter);
@@ -69,7 +67,7 @@ client.on("messageCreate", async message => {
                             }
                             if (match == true) {
                                 message.reply("Hi ! I'm Dad Bot!");
-                                return;
+                                break;
                             } else {
                                 string = string.substring(1);
                                 index++;
@@ -80,13 +78,13 @@ client.on("messageCreate", async message => {
                         || string.charAt(2) == 'M') {
                             if (string.length == 3) {
                                 message.reply("Hi ! I'm Dad Bot!");
-                                return;
+                                break;
                             }
                             string = string.substring(3);
                         } else {
                             if (string.length == 4) {
                                 message.reply("Hi ! I'm Dad Bot!");
-                                return;
+                                break;
                             }
                             string = string.substring(4);
                         }
@@ -104,14 +102,61 @@ client.on("messageCreate", async message => {
                             }
                         }
                         message.reply("Hi" + outString + "! I'm Dad Bot!");
-                        return;
+                        break;
                     }
             } else {
                 string = string.substring(1);
                 index++;
             }
         }
-        
+        let lowerString = message.content.toLowerCase();
+        let string = message.content;
+        let erorCount = 0;
+        let erorLocations = [];
+        let index = 0;
+        while (lowerString != "") {
+            if (lowerString.length > 1) {
+                if (lowerString.startsWith("er") 
+                    || lowerString.startsWith("or")) {
+                    erorCount++;
+                    lowerString = lowerString.substring(1);
+                }
+            } else {
+                break;
+            }
+        }
+        lowerString = message.content.toLowerCase();
+        while (erorCount != 0) {
+            if ((lowerString.charAt(index) == 'e' 
+                || lowerString.charAt(index) == 'o') 
+                && lowerString.charAt(index + 1) == 'r') {
+                if (index != 0) {
+                    if (lowerString.charAt(index - 1) != ' ') {
+                        if (index <= lowerString.length - 3) {
+                            if (lowerString.charAt(index + 2) == ' ') {
+                                erorLocations.push(index);
+                                erorCount--;
+                            }
+                        } else {
+                            erorLocations.push(index);
+                            erorCount--;
+                        }
+                    }
+                }
+            }
+            index++;
+        }
+        let outstring = "";
+        while (erorLocations.length > 0) {
+            let location = erorLocations.pop();
+            let spaceIndex = location;
+            while (string[spaceIndex != ' ']) {
+                spaceIndex--;
+            }
+            outstring += string.substring(spaceIndex + 1, location + 2) + "? I barely know her!\n";
+        }
+        outstring = outstring.substring(0, outstring.length - 1);
+        message.reply(outstring);
     }
 })
 
