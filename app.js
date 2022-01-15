@@ -23,7 +23,6 @@ client.on("interactionCreate", async interaction => {
 
 client.on("messageCreate", async message => {
     if (message.author.bot == false) {
-        console.log('test');
         let lowerString = message.content.toLowerCase();
         let string = message.content;
         console.log(message.author.username + ": " + string);
