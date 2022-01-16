@@ -2,9 +2,21 @@ const {Client, Intents, Interaction} = require('discord.js');
 const { readFile, readSync } = require('fs');
 const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES"]});
 const fs = require('fs');
+const express = require('express');
+const app = express();
 
 client.on('ready', () => {
     console.log('Bot is ready');
+    setInterval(function() {
+        let request = new XMLHttpRequest();
+        request.open("GET", "https://dad-bot2022.herokuapp.com/");
+        request.send();
+        request.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+            }
+        }
+    }, 30000);
 });
 
 client.on("interactionCreate", async interaction => {
@@ -181,5 +193,13 @@ client.on("messageCreate", async message => {
         }
     }
 });
+
+app.get('/', (req, res) {
+    res.send("Alive");
+})
+
+app.listen(process.env.PORT, () => {
+    console.log("Started listening");
+})
 
 client.login(process.env.token);
