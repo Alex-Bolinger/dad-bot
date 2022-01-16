@@ -4,11 +4,12 @@ const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES"]});
 const fs = require('fs');
 const express = require('express');
 const app = express();
+const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 client.on('ready', () => {
     console.log('Bot is ready');
     setInterval(function() {
-        let request = new XMLHttpRequest();
+        const request = new XMLHttpRequest();
         request.open("GET", "https://dad-bot2022.herokuapp.com/");
         request.send();
         request.onreadystatechange = function() {
