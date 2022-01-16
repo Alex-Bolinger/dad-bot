@@ -194,7 +194,7 @@ client.on("messageCreate", async message => {
     }
 });
 
-app.get('/', (req, res) {
+app.get('/', (req, res) => {
     res.send("Alive");
 })
 
