@@ -24,6 +24,7 @@ client.on("interactionCreate", async interaction => {
 client.on("messageCreate", async message => {
     if (message.author.bot == false) {
         let lowerString = message.content.toLowerCase();
+        console.log(message);
         let string = message.content;
         console.log(message.author.username + ": " + string);
         let erorCount = 0;
