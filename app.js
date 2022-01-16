@@ -8,7 +8,7 @@ const app = express();
 client.on('ready', () => {
     console.log('Bot is ready');
     setInterval(function() {
-        let request = new XMLHttpRequest();
+        let request = XMLHttpRequest();
         request.open("GET", "https://dad-bot2022.herokuapp.com/");
         request.send();
         request.onreadystatechange = function() {
