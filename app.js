@@ -17,14 +17,13 @@ client.on("interactionCreate", async interaction => {
         let data = fs.readFileSync('./jokes.json');
         let jokes = JSON.parse(data).jokes;
         joke = jokes[index];
-        await interaction.reply(joke);
+        interaction.reply(joke);
     }
 })
 
 client.on("messageCreate", async message => {
     if (message.author.bot == false) {
         let lowerString = message.content.toLowerCase();
-        console.log(message);
         let string = message.content;
         console.log(message.author.username + ": " + string);
         let erorCount = 0;
@@ -73,9 +72,14 @@ client.on("messageCreate", async message => {
         }
         if (outstring.length > 0) {
             outstring = outstring.substring(0, outstring.length - 1);
-            message.reply(outstring);
+            await message.reply(outstring);
         }
         string = message.content;
+        for (let i = 0; i < string.length; i++) {
+            if (string.charCodeAt(i) == 8217) {
+                string = string.substring(0, i) + "'" + string.substring(i + 1, string.length);
+            }
+        }
         index = 0;
         while (string.length > 1) {
             let lowerString = string.toLowerCase();
@@ -113,7 +117,7 @@ client.on("messageCreate", async message => {
                                             break;
                                         }
                                     }
-                                    message.reply("Hi" + outString + "! I'm Dad Bot!");
+                                    await message.reply("Hi" + outString + "! I'm Dad Bot!");
                                     return;
                                 }
                             } else {
@@ -132,7 +136,7 @@ client.on("messageCreate", async message => {
                                 match = true;
                             }
                             if (match == true) {
-                                message.reply("Hi ! I'm Dad Bot!");
+                                await message.reply("Hi ! I'm Dad Bot!");
                                 return;
                             } else {
                                 string = string.substring(1);
@@ -143,13 +147,13 @@ client.on("messageCreate", async message => {
                         if (string.charAt(2) == 'm' 
                         || string.charAt(2) == 'M') {
                             if (string.length == 3) {
-                                message.reply("Hi ! I'm Dad Bot!");
+                                await message.reply("Hi ! I'm Dad Bot!");
                                 return;
                             }
                             string = string.substring(3);
                         } else {
                             if (string.length == 4) {
-                                message.reply("Hi ! I'm Dad Bot!");
+                                await message.reply("Hi ! I'm Dad Bot!");
                                 return;
                             }
                             string = string.substring(4);
@@ -167,7 +171,7 @@ client.on("messageCreate", async message => {
                                 break;
                             }
                         }
-                        message.reply("Hi" + outString + "! I'm Dad Bot!");
+                        await message.reply("Hi" + outString + "! I'm Dad Bot!");
                         return;
                     }
             } else {
@@ -175,18 +179,6 @@ client.on("messageCreate", async message => {
                 index++;
             }
         }
-        
-    }
-})
-
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isCommand()) {
-        return;
-    }
-
-    if (interaction.commandName === 'test') {
-        interaction.reply("test");
-
     }
 });
 
