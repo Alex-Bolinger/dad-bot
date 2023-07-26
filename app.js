@@ -5,12 +5,13 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+const config = require("./config.json");
 
 client.on('ready', () => {
     console.log('Bot is ready');
     setInterval(function() {
         const request = new XMLHttpRequest();
-        request.open("GET", "https://dad-bot2022.herokuapp.com/");
+        request.open("GET", "https://bones-dad-bot.uc.r.appspot.com");
         request.send();
         request.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -203,4 +204,4 @@ app.listen(process.env.PORT, () => {
     console.log("Started listening");
 })
 
-client.login(process.env.token);
+client.login(config.token);

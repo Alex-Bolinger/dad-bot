@@ -1,3 +1,5 @@
+node_modules/
 deploy.js
 config.json
 .env
+key.json
