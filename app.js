@@ -18,7 +18,7 @@ client.on('ready', () => {
                 console.log(this.responseText);
             }
         }
-    }, 20000);
+    }, 1800000);
 });
 
 client.on("interactionCreate", async interaction => {
