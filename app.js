@@ -54,6 +54,7 @@ client.on("messageCreate", async message => {
         }
         lowerString = message.content.toLowerCase();
         while (erorCount != 0) {
+            console.log(lowerString.substring(index) + ' ' + erorCount);
             if ((lowerString.charAt(index) == 'e' 
                 || lowerString.charAt(index) == 'o') 
                 && lowerString.charAt(index + 1) == 'r') {
@@ -63,11 +64,15 @@ client.on("messageCreate", async message => {
                             if (lowerString.charAt(index + 2) == ' ') {
                                 erorLocations.push(index);
                                 erorCount--;
+                            } else {
+                                erorCount--;
                             }
                         } else {
                             erorLocations.push(index);
                             erorCount--;
                         }
+                    } else {
+                        erorCount--;
                     }
                 } else {
                     erorCount--;
@@ -92,7 +97,16 @@ client.on("messageCreate", async message => {
         for (let i = 0; i < string.length; i++) {
             if (string.charCodeAt(i) == 8217) {
                 string = string.substring(0, i) + "'" + string.substring(i + 1, string.length);
+            } else if (string.charAt(i) == "\"") {
+                string = string.substring(0, i) + "''" + string.substring(i + 1, string.length);
+            } else if (string.charCodeAt(i) == 8221) {
+                string = string.substring(0, i) + "''" + string.substring(i + 1, string.length);
+            } else if (string.charAt(i) == "`") {
+                string = string.substring(0, i) + "'" + string.substring(i + 1, string.length);
             }
+        }
+        while (string.indexOf('\'\'') >= 0) {
+            string = string.substring(0, string.indexOf('\'\'')) + string.substring(string.indexOf('\'\'') + 1);
         }
         index = 0;
         while (string.length > 1) {
