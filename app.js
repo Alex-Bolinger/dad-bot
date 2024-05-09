@@ -1,3 +1,4 @@
+// imports/initializations
 const {Client, Intents, Interaction} = require('discord.js');
 const { readFile, readSync } = require('fs');
 const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES"]});
@@ -7,20 +8,8 @@ const app = express();
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const config = require("./config.json");
 
-client.on('ready', () => {
-    console.log('Bot is ready');
-    setInterval(function() {
-        const request = new XMLHttpRequest();
-        request.open("GET", "https://bones-dad-bot.uc.r.appspot.com");
-        request.send();
-        request.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
-            }
-        }
-    }, 600000);
-});
 
+// handle slash commands (right now only /joke)
 client.on("interactionCreate", async interaction => {
     if (!interaction.isCommand()) {
         return;
@@ -35,6 +24,7 @@ client.on("interactionCreate", async interaction => {
     }
 })
 
+// handle messages
 client.on("messageCreate", async message => {
     if (message.author.bot == false) {
         let lowerString = message.content.toLowerCase();
@@ -43,6 +33,12 @@ client.on("messageCreate", async message => {
         let erorCount = 0;
         let erorLocations = [];
         let index = 0;
+
+        /**
+         * Begin er/or detection
+        */
+
+        // count er's and or's
         while (lowerString != "") {
             if (lowerString.length > 1) {
                 if (lowerString.startsWith("er") 
@@ -52,6 +48,8 @@ client.on("messageCreate", async message => {
             }
             lowerString = lowerString.substring(1);
         }
+
+        // find er and or locations
         lowerString = message.content.toLowerCase();
         while (erorCount != 0) {
             if ((lowerString.charAt(index) == 'e' 
@@ -79,6 +77,7 @@ client.on("messageCreate", async message => {
             }
             index++;
         }
+        // find full er/or words
         let outstring = "";
         while (erorLocations.length > 0) {
             let location = erorLocations.pop();
@@ -86,17 +85,26 @@ client.on("messageCreate", async message => {
             while (string[spaceIndex] != ' ' && spaceIndex >= 0) {
                 spaceIndex--;
             }
-            outstring += string.substring(spaceIndex + 1, location + 2) + "? I barely know her!\n";
+            let word = string.substring(spaceIndex + 1, location + 2);
+            // don't output if the matched word is for. that is obnoxious
+            if (word != 'for') {
+                outstring += word + "? I barely know her!\n";
+            }
         }
         if (outstring.length > 0) {
             outstring = outstring.substring(0, outstring.length - 1);
             await message.reply(outstring)
-		.catch(e => {
-			console.log(e);
-		});
+		        .catch(e => {
+			        console.log(e);
+		        });
         }
+
+        /**
+         * Begin I'm detection
+         */
         string = message.content;
         for (let i = 0; i < string.length; i++) {
+            // replace weird ios characters with normal characters
             if (string.charCodeAt(i) == 8217) {
                 string = string.substring(0, i) + "'" + string.substring(i + 1, string.length);
             } else if (string.charAt(i) == "\"") {
@@ -107,9 +115,13 @@ client.on("messageCreate", async message => {
                 string = string.substring(0, i) + "'" + string.substring(i + 1, string.length);
             }
         }
+
+        // remove double-single quotes
         while (string.indexOf('\'\'') >= 0) {
             string = string.substring(0, string.indexOf('\'\'')) + string.substring(string.indexOf('\'\'') + 1);
         }
+
+        // detect I'm and other variations
         index = 0;
         while (string.length > 1) {
             let lowerString = string.toLowerCase();
@@ -148,9 +160,9 @@ client.on("messageCreate", async message => {
                                         }
                                     }
                                     await message.reply("Hi" + outString + "! I'm Dad Bot!")
-					.catch(e => {
-						console.log(e);
-					});
+                                        .catch(e => {
+                                            console.log(e);
+                                        });
                                     return;
                                 }
                             } else {
@@ -169,9 +181,9 @@ client.on("messageCreate", async message => {
                             }
                             if (match == true) {
                                 await message.reply("Hi ! I'm Dad Bot!")
-					.catch(e => {
-						console.log(e);
-					});
+                                    .catch(e => {
+                                        console.log(e);
+                                    });
                                 return;
                             } else {
                                 string = string.substring(1);
@@ -183,18 +195,18 @@ client.on("messageCreate", async message => {
                         || string.charAt(2) == 'M') {
                             if (string.length == 3) {
                                 await message.reply("Hi ! I'm Dad Bot!")
-					.catch(e => {
-						console.log(e);
-					});
+                                    .catch(e => {
+                                        console.log(e);
+                                    });
                                 return;
                             }
                             string = string.substring(3);
                         } else {
                             if (string.length == 4) {
                                 await message.reply("Hi ! I'm Dad Bot!")
-					.catch(e => {
-						console.log(e);
-					});
+                                    .catch(e => {
+                                        console.log(e);
+                                    });
                                 return;
                             }
                             string = string.substring(4);
@@ -213,9 +225,9 @@ client.on("messageCreate", async message => {
                             }
                         }
                         await message.reply("Hi" + outString + "! I'm Dad Bot!")
-				.catch(e => {
-					console.log(e);
-				});
+                            .catch(e => {
+                                console.log(e);
+                            });
                         return;
                     }
             } else {
@@ -226,12 +238,15 @@ client.on("messageCreate", async message => {
     }
 });
 
+// HTTP GET endpoint that can be used to tell if the bot is online
 app.get('/', (req, res) => {
     res.send("Alive");
 })
 
-app.listen(process.env.PORT, () => {
+// start HTTP server
+app.listen(process.env.PORT || 8081, () => {
     console.log("Started listening");
 })
 
+// bot login
 client.login(config.token);
