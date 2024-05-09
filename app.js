@@ -54,7 +54,6 @@ client.on("messageCreate", async message => {
         }
         lowerString = message.content.toLowerCase();
         while (erorCount != 0) {
-            console.log(lowerString.substring(index) + ' ' + erorCount);
             if ((lowerString.charAt(index) == 'e' 
                 || lowerString.charAt(index) == 'o') 
                 && lowerString.charAt(index + 1) == 'r') {
@@ -91,7 +90,10 @@ client.on("messageCreate", async message => {
         }
         if (outstring.length > 0) {
             outstring = outstring.substring(0, outstring.length - 1);
-            await message.reply(outstring);
+            await message.reply(outstring)
+		.catch(e => {
+			console.log(e);
+		});
         }
         string = message.content;
         for (let i = 0; i < string.length; i++) {
@@ -145,7 +147,10 @@ client.on("messageCreate", async message => {
                                             break;
                                         }
                                     }
-                                    await message.reply("Hi" + outString + "! I'm Dad Bot!");
+                                    await message.reply("Hi" + outString + "! I'm Dad Bot!")
+					.catch(e => {
+						console.log(e);
+					});
                                     return;
                                 }
                             } else {
@@ -155,7 +160,6 @@ client.on("messageCreate", async message => {
                         } else {
                             let match = false;
                             let letter = message.content.charAt(index - 1).toLowerCase();
-                            console.log(letter);
                             if (letter.charCodeAt(0) >= 97 
                                 && letter.charCodeAt(0) <= 122) {
                                     string = string.substring(1);
@@ -164,7 +168,10 @@ client.on("messageCreate", async message => {
                                 match = true;
                             }
                             if (match == true) {
-                                await message.reply("Hi ! I'm Dad Bot!");
+                                await message.reply("Hi ! I'm Dad Bot!")
+					.catch(e => {
+						console.log(e);
+					});
                                 return;
                             } else {
                                 string = string.substring(1);
@@ -175,13 +182,19 @@ client.on("messageCreate", async message => {
                         if (string.charAt(2) == 'm' 
                         || string.charAt(2) == 'M') {
                             if (string.length == 3) {
-                                await message.reply("Hi ! I'm Dad Bot!");
+                                await message.reply("Hi ! I'm Dad Bot!")
+					.catch(e => {
+						console.log(e);
+					});
                                 return;
                             }
                             string = string.substring(3);
                         } else {
                             if (string.length == 4) {
-                                await message.reply("Hi ! I'm Dad Bot!");
+                                await message.reply("Hi ! I'm Dad Bot!")
+					.catch(e => {
+						console.log(e);
+					});
                                 return;
                             }
                             string = string.substring(4);
@@ -199,7 +212,10 @@ client.on("messageCreate", async message => {
                                 break;
                             }
                         }
-                        await message.reply("Hi" + outString + "! I'm Dad Bot!");
+                        await message.reply("Hi" + outString + "! I'm Dad Bot!")
+				.catch(e => {
+					console.log(e);
+				});
                         return;
                     }
             } else {
